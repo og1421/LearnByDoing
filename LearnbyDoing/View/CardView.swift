@@ -14,6 +14,7 @@ struct CardView: View {
     @State private var fadeIn = false
     @State private var moveDownward: Bool = false
     @State private var moveUpward = false
+    @State private var showAlert = false
     
     var hapticImpact = UIImpactFeedbackGenerator(style: .heavy)
     
@@ -42,6 +43,7 @@ struct CardView: View {
                 //Action
                 playSound(soundName: "sound-chime", type: "mp3")
                 self.hapticImpact.impactOccurred()
+                self.showAlert.toggle()
             } label: {
                 HStack {
                     Text(card.callToAction.uppercased())
@@ -76,7 +78,14 @@ struct CardView: View {
                 self.moveUpward.toggle()
             }
         }
-    }
+        .alert(isPresented: $showAlert ) {
+            Alert(
+                title: Text(card.title),
+                message: Text(card.message),
+                dismissButton: .default(Text("Ok")))
+            
+        }
+    }//:Zstack
 }
 
 //MARK: - Preview
